@@ -68,6 +68,7 @@ contract MoodNft is ERC721 {
                             name(),
                             '","description":"An NFT that reflects the mood of the owner, 100% on Chain!", ',
                             '"attributes": [{"trait_type":"Mood","value": 100}], "image":',
+                            '"',
                             imageURI,
                             '"}'
                         )
