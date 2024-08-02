@@ -3,7 +3,6 @@ pragma solidity ^0.8.20;
 
 import {Test, console} from "forge-std/Test.sol";
 import {MoodNft} from "src/MoodNft.sol";
-import {DeployMoodNft} from "script/DeployMoodNft.s.sol";
 
 contract MoodNftTest is Test {
     string constant NFT_NAME = "MoodNFT";
@@ -53,5 +52,10 @@ contract MoodNftTest is Test {
             keccak256(abi.encodePacked(moodNft.tokenURI(0))),
             keccak256(abi.encodePacked(HAPPY_MOOD_URI))
         );
+    }
+
+    function testGetTokenIDIfMsgSenderDontOwnAnyTokens() public {
+        vm.expectRevert();
+        moodNft.getTokenIdByOwner();
     }
 }

@@ -7,6 +7,7 @@ import {Base64} from "lib/openzeppelin-contracts/contracts/utils/Base64.sol";
 contract MoodNft is ERC721 {
     // errors
     error MoodNft__CantFlipMoodIfNotOwner();
+    error MoodNft__UserHasNoTokens();
 
     enum Mood {
         HAPPY,
@@ -18,6 +19,7 @@ contract MoodNft is ERC721 {
     string private s_sadSvgUri;
 
     mapping(uint256 => Mood) private s_tokenIdToMood;
+    mapping(address => uint256) private s_addressToTokenId;
 
     constructor(
         string memory happySvgUri,
@@ -57,6 +59,9 @@ contract MoodNft is ERC721 {
         uint256 tokenId
     ) public view virtual override returns (string memory) {
         string memory imageURI = s_happySvgUri;
+        if (s_tokenIdToMood[tokenId] == Mood.SAD) {
+            imageURI = s_sadSvgUri;
+        }
 
         return
             string(
@@ -87,5 +92,13 @@ contract MoodNft is ERC721 {
 
     function getTokenCounter() public view returns (uint256) {
         return s_tokenCounter;
+    }
+
+    function getTokenIdByOwner() public view returns (uint256) {
+        if (balanceOf(msg.sender) == 0) {
+            revert MoodNft__UserHasNoTokens();
+        }
+
+        return s_addressToTokenId[msg.sender];
     }
 }
