@@ -32,6 +32,8 @@ contract MoodNftTest is Test {
         vm.prank(USER);
         moodNft.flipMood(0);
 
+        console.log("TokenURI: ", moodNft.tokenURI(0));
+        console.log("SAD MOOD: ", SAD_MOOD_URI);
         assertEq(moodNft.tokenURI(0), SAD_MOOD_URI);
     }
 }

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import {Script} from "forge-std/Script.sol";
+import {Script, console} from "forge-std/Script.sol";
 import {DevOpsTools} from "lib/foundry-devops/src/DevOpsTools.sol";
 import {BasicNft} from "src/BasicNft.sol";
 import {MoodNft} from "src/MoodNft.sol";
@@ -46,9 +46,11 @@ contract FlipMoodNft is Script {
 
     function flipMoodNftOnContract(address _moodNftAdress) public {
         MoodNft moodNft = MoodNft(_moodNftAdress);
-        uint256 tokenID = moodNft.getTokenIdByOwner();
+        uint256 tokenId;
+
         vm.startBroadcast();
-        moodNft.flipMood(tokenID);
+        tokenId = moodNft.getTokenIdByOwner();
+        moodNft.flipMood(tokenId);
         vm.stopBroadcast();
     }
 }
